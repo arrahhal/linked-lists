@@ -93,11 +93,37 @@ class LinkedList {
     string += `null`;
     return string;
   }
+  insertAt(value, index) {
+    if (index === 0) {
+      this.prepend(value);
+      return;
+    }
+    if (index >= this.size()) {
+      this.append(value);
+      return;
+    }
+    const prevNode = this.at(index - 1);
+    const newNode = new Node(value, prevNode.next);
+    prevNode.setNext(newNode);
+  }
+  removeAt(index) {
+    if (index === 0) {
+      if (this.start !== null) this.start = this.start.next;
+      return;
+    }
+    if (index >= this.size()) {
+      this.pop();
+      return;
+    }
+    const prevNode = this.at(index - 1);
+    prevNode.setNext(prevNode.next.next);
+  }
 }
 
 const list = new LinkedList();
 list.append('first');
 list.append('second');
+list.append('thirdNode');
 list.prepend('before first');
 console.log(`list.size(): ${list.size()}`);
 console.log('list.head():');
@@ -118,3 +144,14 @@ console.log(list.contains('before first'));
 
 console.log('list find("first"):');
 console.log(list.find('first'));
+
+console.log('insertAt("before second", 2)');
+list.insertAt('before second', 2);
+console.log(list.toString());
+
+console.log('insertAt(overNode, 3):');
+list.insertAt('over Node', 3);
+console.log(list.toString());
+console.log('removeAt(3):');
+list.removeAt(3);
+console.log(list.toString());
